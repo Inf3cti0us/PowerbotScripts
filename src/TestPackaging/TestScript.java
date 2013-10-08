@@ -76,7 +76,7 @@ public class TestScript extends ActiveScript implements PaintListener{
         Graphics g = dataBuffer.getGraphics();
 
         //Drawing the sensoredUsername to 500x300
-        g.drawImage(sensoredUsername, 500, 300, null);      // g.drawImage(mshi, 455, 255, null);
+        g.drawImage(sensoredUsername, 500, 300, null);      // g.drawImage(mshi, 455, 255, null);hh
 
         //Declare the blurKernel
         float[] blurKernel = {
