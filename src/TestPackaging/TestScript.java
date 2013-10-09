@@ -19,7 +19,7 @@ import java.awt.image.Kernel;
 public class TestScript extends AbstractScript implements PaintListener {
 
     //Old -> WidgetChild wUsername = new Widget(137).getChild(53);
-   final Component wUsername = ctx.widgets.get(137, 53);
+   final Component componentUsername = ctx.widgets.get(137, 53);
 
     /** Meh
     WidgetChild slot1KeyBind = new Widget(640).getChild(70);
@@ -46,7 +46,7 @@ public class TestScript extends AbstractScript implements PaintListener {
     @Override
     public void run() {
         if(ctx.game.isLoggedIn()){ //Game.isLoggedIn()){
-            if(!isSmeared && wUsername.isVisible()){
+            if(!isSmeared && componentUsername.isVisible()){
             createBlurredImage(5);
                 isSmeared = true;
             }
@@ -58,7 +58,7 @@ public class TestScript extends AbstractScript implements PaintListener {
         //return 43; //Best Number In the world..
     }
 
-    public BufferedImage gfxToImage() {
+    public BufferedImage getCanvasImage() {
         Canvas meh = ctx.getClient().getCanvas();
         int w = meh.getWidth();
         int h = meh.getHeight();
@@ -76,11 +76,11 @@ public class TestScript extends AbstractScript implements PaintListener {
     public void createBlurredImage(int blurFactor) {
 
         //Capture Username
-                            sensoredUsername = gfxToImage().getSubimage(
-                                    wUsername.getAbsoluteLocation().x,
-                                    wUsername.getAbsoluteLocation().y,
-                                    wUsername.getWidth()-15,
-                                    wUsername.getHeight());
+                            sensoredUsername = getCanvasImage().getSubimage(
+                                    componentUsername.getAbsoluteLocation().x,
+                                    componentUsername.getAbsoluteLocation().y,
+                                    componentUsername.getWidth()-15,
+                                    componentUsername.getHeight());
         /*
         sensoredUsername = Environment.captureScreen().getSubimage(wUsername.getAbsoluteX(), wUsername.getAbsoluteY(),
                 wUsername.getWidth()-15, wUsername.getHeight());
@@ -121,9 +121,9 @@ public class TestScript extends AbstractScript implements PaintListener {
     public void repaint(Graphics graphics) {
         Graphics2D g = (Graphics2D)graphics;
         Font meh = g.getFont();
-               if(ctx.game.isLoggedIn() && wUsername!=null && wUsername.isOnScreen() && wUsername.isVisible()){
-                  g.drawImage(sensoredUsername, wUsername.getAbsoluteLocation().x-2, wUsername.getAbsoluteLocation().y+1,
-                          wUsername.getWidth()-16, wUsername.getHeight()-4,null);
+               if(ctx.game.isLoggedIn() && componentUsername!=null && componentUsername.isOnScreen() && componentUsername.isVisible()){
+                  g.drawImage(sensoredUsername, componentUsername.getAbsoluteLocation().x-2, componentUsername.getAbsoluteLocation().y+1,
+                          componentUsername.getWidth()-16, componentUsername.getHeight()-4,null);
 
         } else{
                    PaintUtils.drawStringCentered("No username to block!", meh, noUsername, Color.WHITE, g);
