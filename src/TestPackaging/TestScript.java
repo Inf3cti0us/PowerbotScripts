@@ -4,9 +4,6 @@ import TestPackaging.Conversions.PaintUtils.PaintUtils;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Manifest;
-import org.powerbot.script.methods.Environment;
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.wrappers.*;
 import org.powerbot.script.wrappers.Component;
 
 import java.awt.*;
@@ -52,7 +49,7 @@ public class TestScript extends AbstractScript implements PaintListener {
             }
 
             while(isSmeared){
-                sleep((int) 100L);         //TODO Find out what replaces this..
+                ctx.game.sleep((int) 100L);         //TODO Find out what replaces this..
                }
         }
         //return 43; //Best Number In the world..
