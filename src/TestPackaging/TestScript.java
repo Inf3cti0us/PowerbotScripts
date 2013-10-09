@@ -1,13 +1,13 @@
 package TestPackaging;
 
 import TestPackaging.Conversions.PaintUtils.PaintUtils;
-import org.powerbot.core.event.listeners.PaintListener;
-import org.powerbot.core.script.ActiveScript;
-import org.powerbot.game.api.Manifest;
-import org.powerbot.game.api.methods.Environment;
-import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.wrappers.widget.Widget;
-import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.event.PaintListener;
+import org.powerbot.script.AbstractScript;
+import org.powerbot.script.Manifest;
+import org.powerbot.script.methods.Environment;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.wrappers.*;
+import org.powerbot.script.wrappers.Component;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,9 +16,10 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 
 @Manifest(authors = { "Inf3cti0us -bro433-" }, name = "Name Sensor", description = "Sensors Your accounts name!", version = 0.2, topic = 2)
-public class TestScript extends ActiveScript implements PaintListener{
+public class TestScript extends AbstractScript implements PaintListener {
 
-    WidgetChild wUsername = new Widget(137).getChild(53);
+    //Old -> WidgetChild wUsername = new Widget(137).getChild(53);
+   final Component wUsername = ctx.widgets.get(137, 53);
 
     /** Meh
     WidgetChild slot1KeyBind = new Widget(640).getChild(70);
@@ -39,22 +40,33 @@ public class TestScript extends ActiveScript implements PaintListener{
     public BufferedImage sensoredUsername;
     public BufferedImage dataBuffer;
 
-    boolean smeared = false;
+    boolean isSmeared = false;
     Rectangle noUsername = new Rectangle(548, 424, 189, 31);
 
     @Override
-    public int loop() {
-        if(Game.isLoggedIn()){
-            if(!smeared && wUsername.visible()){
+    public void run() {
+        if(ctx.game.isLoggedIn()){ //Game.isLoggedIn()){
+            if(!isSmeared && wUsername.isVisible()){
             createBlurredImage(5);
-                smeared = true;
+                isSmeared = true;
             }
 
-            while(smeared){
+            while(isSmeared){
                 sleep((int) 100L);
                }
         }
-        return 43; //Best Number In the world..
+        //return 43; //Best Number In the world..
+    }
+
+    public BufferedImage gfxToImage() {
+        Canvas meh = ctx.getClient().getCanvas();
+        int w = meh.getWidth();
+        int h = meh.getHeight();
+        BufferedImage image = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = image.createGraphics();
+        meh.paint(g2);
+        g2.dispose();
+        return image;
     }
 
     /**
@@ -64,8 +76,15 @@ public class TestScript extends ActiveScript implements PaintListener{
     public void createBlurredImage(int blurFactor) {
 
         //Capture Username
+                            sensoredUsername = gfxToImage().getSubimage(
+                                    wUsername.getAbsoluteLocation().x,
+                                    wUsername.getAbsoluteLocation().y,
+                                    wUsername.getWidth()-15,
+                                    wUsername.getHeight());
+        /*
         sensoredUsername = Environment.captureScreen().getSubimage(wUsername.getAbsoluteX(), wUsername.getAbsoluteY(),
                 wUsername.getWidth()-15, wUsername.getHeight());
+                */
 
         //
         dataBuffer = new BufferedImage(sensoredUsername.getWidth(null),
@@ -99,7 +118,7 @@ public class TestScript extends ActiveScript implements PaintListener{
 
 
     @Override
-    public void onRepaint(Graphics graphics) {
+    public void repaint(Graphics graphics) {
         Graphics2D g = (Graphics2D)graphics;
         Font meh = g.getFont();
                if(Game.isLoggedIn() && wUsername!=null && wUsername.isOnScreen() && wUsername.visible()){
@@ -113,4 +132,5 @@ public class TestScript extends ActiveScript implements PaintListener{
                }
 
     }
+
 }
