@@ -52,7 +52,7 @@ public class TestScript extends AbstractScript implements PaintListener {
             }
 
             while(isSmeared){
-                sleep((int) 100L);
+                sleep((int) 100L);         //TODO Find out what replaces this..
                }
         }
         //return 43; //Best Number In the world..
@@ -121,8 +121,8 @@ public class TestScript extends AbstractScript implements PaintListener {
     public void repaint(Graphics graphics) {
         Graphics2D g = (Graphics2D)graphics;
         Font meh = g.getFont();
-               if(Game.isLoggedIn() && wUsername!=null && wUsername.isOnScreen() && wUsername.visible()){
-                  g.drawImage(sensoredUsername, wUsername.getAbsoluteX()-2, wUsername.getAbsoluteY()+1,
+               if(ctx.game.isLoggedIn() && wUsername!=null && wUsername.isOnScreen() && wUsername.isVisible()){
+                  g.drawImage(sensoredUsername, wUsername.getAbsoluteLocation().x-2, wUsername.getAbsoluteLocation().y+1,
                           wUsername.getWidth()-16, wUsername.getHeight()-4,null);
 
         } else{
